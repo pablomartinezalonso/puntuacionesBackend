@@ -14,12 +14,19 @@ app.get('/', (req,res)=>{
     res.status(200).send("Hola Pablo");
 })
 
-app.get('/puntuaciones', (req,res)=>{
-    Puntuacion.find().exec( (err, puntuaciones)=>{
+
+//TODO: Refactorizar el codigo
+//TODO: Usar rutas
+//TODO: Async await
+
+
+app.get('/puntuacion/:id', (req,res)=>{
+    let puntuacionId = req.params.id;
+    Puntuacion.findById(puntuacionId).exec( (err, puntuacion)=>{
         if(err){
-            res.status(500).send({accion:'get all', mensaje:'error al obtener la puntuacion'})
+            res.status(500).send({accion:'get one', mensaje:'error al obtener la puntuacion'})
         }else{
-            res.status(200).send({accion:'get all', datos: puntuaciones})
+            res.status(200).send({accion:'get one', datos: puntuacion})
         }
     })
     
@@ -49,7 +56,7 @@ app.delete('/puntuacion/:id',(req,res)=>{
     Puntuacion.findByIdAndDelete(puntuacionId, (err, puntuacionBorrada)=>{
         if(err){
             res.status(500).send({accion:'delete', mensaje: 'Error al borrar la puntuacion'})
-        }if(!puntuacionBorrada){
+        }else if(!puntuacionBorrada){
             res.status(404).send({accion:'delete', mensaje: 'Error el id a borrar no existe'})
         }
         else{
@@ -59,8 +66,28 @@ app.delete('/puntuacion/:id',(req,res)=>{
     
 })
 
+
+app.put('/puntuacion/:id', (req,res)=>{
+    var datos = req.body;
+    let puntuacionId = req.params.id;
+    Puntuacion.findByIdAndUpdate(puntuacionId, datos, (err, puntuacionActualizada)=>{
+        if(err){
+            res.status(500).send({accion:'update', mensaje: 'Error al modificar la puntuacion'})
+        }else if(!puntuacionActualizada){
+            res.status(404).send({accion:'update', mensaje: 'Error el id a actualizar no existe'})
+        }else{
+            res.status(200).send({accion:'update', datos: puntuacionActualizada})
+        }
+    })
+})
+
+
+
+
+
+
 //Nos conectamos a mongo dockerizado
-mongoose.connect('mongodb://localhost:27017/scores', (err, res)=>{
+mongoose.connect('mongodb://localhost:27018/scores', (err, res)=>{
     if(err){
         console.log('Error al conectarme a la base de datos')
         throw err
