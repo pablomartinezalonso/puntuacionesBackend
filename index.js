@@ -30,13 +30,10 @@ app.use(morgan('dev'))
 app.use('/puntuacion', routerPuntuacion)
 
 
-//TODO: Quitar
-app.get('/', (req,res)=>{
-    res.status(200).send("Hola Pablo");
-})
 
-
-//TODO: login
+//TODO: add usuarios (email, password, nombre) -> relaciones 1 a n
+//TODO: login (jwt) + login con google, con facebook, ...
+//TODO: Validaciones
 
 
 //Nos conectamos a mongo dockerizado

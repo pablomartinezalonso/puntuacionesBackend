@@ -60,9 +60,11 @@ async function insert(req,res){
         }
     })
     */
-    
+    //const puntuacion = new Puntuacion(req.body);
+
     try{
         var puntuacion = new Puntuacion(req.body);
+        puntuacion._id=undefined;
         let puntuacionGuardada = await puntuacion.save()
         res.status(200).send({accion:'save', datos: puntuacionGuardada})
     }catch(err){
