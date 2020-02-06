@@ -4,9 +4,10 @@ var mongoose = require('mongoose');
 var routerPuntuacion = require('./routers/puntuacion')
 var cors = require('cors')
 var morgan = require('morgan')
+var dotenv = require('dotenv')
 
 var app = express();
-
+dotenv.config();
 
 
 //Preparo body parser para que transforme las peticiones de texto a json
@@ -48,9 +49,9 @@ app.get('/', (req,res)=>{
     }
 });*/
 const run = async()=>{
-    await mongoose.connect('mongodb://localhost:27018/scores', 
+    await mongoose.connect(process.env.URL_BASEDATOS, 
         {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true})
-    await app.listen(5200)
+    await app.listen(process.env.PUERTO_SERVIDOR)
 
     console.log('Servidor y base de datos arrancados')
 }
